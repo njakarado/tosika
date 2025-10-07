@@ -1,0 +1,79 @@
+<!-- ton-composant.component.html -->
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- ID (caché) -->
+  <input type="hidden" formControlName="id" />
+
+  <!-- Production ID -->
+  <nz-form-item>
+    <nz-form-label nzRequired>Production ID</nz-form-label>
+    <nz-form-control nzErrorTip="Le Production ID est requis">
+      <input nz-input formControlName="productionId" placeholder="ID de production" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- Min Age -->
+  <nz-form-item>
+    <nz-form-label nzRequired>Âge minimum</nz-form-label>
+    <nz-form-control [nzErrorTip]="minAgeErrorTpl">
+      <input nz-input type="number" formControlName="minAge" placeholder="Âge minimum" />
+    </nz-form-control>
+    <ng-template #minAgeErrorTpl let-control>
+      @if (control.errors?.required) {
+        <span>L'âge minimum est requis.</span>
+      }
+      @if (control.errors?.minAgeMustBeLess) {
+        <span>L'âge minimum doit être inférieur à l'âge maximum.</span>
+      }
+    </ng-template>
+  </nz-form-item>
+
+  <!-- Max Age -->
+  <nz-form-item>
+    <nz-form-label nzRequired>Âge maximum</nz-form-label>
+    <nz-form-control [nzErrorTip]="maxAgeErrorTpl">
+      <input nz-input type="number" formControlName="maxAge" placeholder="Âge maximum" />
+    </nz-form-control>
+    <ng-template #maxAgeErrorTpl let-control>
+      @if (control.errors?.required) {
+        <span>L'âge maximum est requis.</span>
+      }
+      @if (control.errors?.maxAgeMustBeGreater) {
+        <span>L'âge maximum doit être supérieur à l'âge minimum.</span>
+      }
+    </ng-template>
+  </nz-form-item>
+
+  <!-- Is Reporting -->
+  <nz-form-item>
+    <nz-checkbox formControlName="isReporting">Is Reporting</nz-checkbox>
+  </nz-form-item>
+
+  <!-- Is Legality -->
+  <nz-form-item>
+    <nz-checkbox formControlName="isLegality">Is Legality</nz-checkbox>
+  </nz-form-item>
+
+  <!-- Select multiple -->
+  <nz-form-item>
+    <nz-form-label>Options</nz-form-label>
+    <nz-form-control>
+      <nz-select
+        formControlName="selectedOptions"
+        [nzMode]="'multiple'"
+        nzPlaceHolder="Sélectionnez..."
+        style="width: 300px;"
+      >
+        <nz-option
+          *ngFor="let option of listOfOptions"
+          [nzValue]="option.value"
+          [nzLabel]="option.label"
+        ></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- Bouton de soumission -->
+  <button nz-button nzType="primary" type="submit" [disabled]="form.invalid">
+    Valider
+  </button>
+</form>
